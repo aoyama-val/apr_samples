@@ -1,4 +1,4 @@
-CFLAGS=-g3 -O0
+CFLAGS=-g3 -O0 -W -Wall -Wno-unused-parameter
 APR_DIR=/usr/local/apr
 APR_INC_DIR=$(APR_DIR)/include/apr-1
 APR_LIB_DIR=$(APR_DIR)/lib

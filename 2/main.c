@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 
     for (int i = 0; i < 20; i++) {
         size_t size = (size_t)pow(2, i);
-        fprintf(stderr, "calling apr_palloc(%d)\n", size);
+        fprintf(stderr, "calling apr_palloc(%zu)\n", size);
         apr_palloc(pool, size);
     }
 

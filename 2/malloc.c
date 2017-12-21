@@ -1,29 +1,14 @@
-// https://stackoverflow.com/questions/6083337/overriding-malloc-using-the-ld-preload-mechanism
-
-#define _GNU_SOURCE
+// https://stackoverflow.com/a/17850402/5209556
 
 #include <stdio.h>
-#include <dlfcn.h>
 
-static void* (*real_malloc)(size_t)=NULL;
+extern void *__libc_malloc(size_t size);
 
-static void mtrace_init(void)
+void*
+malloc (size_t size)
 {
-    real_malloc = dlsym(RTLD_NEXT, "malloc");
-    if (NULL == real_malloc) {
-        fprintf(stderr, "Error in `dlsym`: %s\n", dlerror());
-    }
-}
-
-void *malloc(size_t size)
-{
-    if(real_malloc==NULL) {
-        mtrace_init();
-    }
-
-    void *p = NULL;
-    fprintf(stderr, "malloc(%d) = ", size);
-    p = real_malloc(size);
-    fprintf(stderr, "%p\n", p);
+    void *caller = __builtin_return_address(0);
+    void *p = __libc_malloc(size);
+    fprintf(stderr, "malloc(%d) = %p\n", size, p);
     return p;
 }
